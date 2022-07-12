@@ -7,13 +7,16 @@
     <br>
 </head>
 <body>
+<c:set var="total" value="${}"/>
 <c:forEach var="item" items="${products}">
     <c:out value="${item.product}"/>
+    <c:set var = "total" value="${total + (item.product.price*item.quantity)}"/>
     <br>
     Quantity:<c:out value="${item.quantity}"/>
     <a href="${pageContext.request.contextPath}/shoppingCart/remove?productId=${item.product.id}">Remove</a>
     <br>
 </c:forEach>
+    Total:<c:out value="${total}"/>$
 <br>
 <a href="/listOfProducts">Continue shopping</a>
 </body>
