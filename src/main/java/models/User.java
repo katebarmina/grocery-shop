@@ -1,14 +1,27 @@
 package models;
 
+import java.util.Objects;
+
 public class User {
 
     private long id;
     private String email;
     private String password;
 
-    public User( String email, String password) {
+    private Role role;
+
+    public User(String email, String password, Role role) {
         this.email = email;
         this.password = password;
+        this.role = role;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public long getId() {
@@ -39,12 +52,15 @@ public class User {
     }
 
     @Override
-    public int hashCode() {
-        return super.hashCode();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(email, user.email) && Objects.equals(password, user.password) && role == user.role;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public int hashCode() {
+        return Objects.hash(email, password, role);
     }
 }

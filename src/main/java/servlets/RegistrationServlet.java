@@ -1,6 +1,7 @@
 package servlets;
 
 import dao.UserDAO;
+import models.Role;
 import models.User;
 
 import javax.servlet.*;
@@ -24,7 +25,7 @@ public class RegistrationServlet extends HttpServlet {
      String email = request.getParameter("email");
      String password = request.getParameter("password");
 
-        User user = new User(email,password);
+        User user = new User(email,password,Role.CLIENT);
         dao.registerUser(user);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/welcome.jsp");
         dispatcher.forward(request,response);

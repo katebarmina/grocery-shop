@@ -18,6 +18,7 @@
 </c:forEach>
     Total:<c:out value="${total}"/>$
 <br>
+<a href="/orderServlet">Order</a>
 <a href="/listOfProducts">Continue shopping</a>
 </body>
 </html>

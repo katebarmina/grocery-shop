@@ -1,6 +1,7 @@
 package servlets;
 
 import dao.UserDAO;
+import models.Role;
 import models.User;
 
 
@@ -12,7 +13,8 @@ import java.io.IOException;
 
 @WebServlet(name = "loginServlet", value = "/loginServlet")
 public class LoginServlet extends HttpServlet {
-    private UserDAO dao = new UserDAO();
+
+    private final UserDAO dao = new UserDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -29,8 +31,13 @@ public class LoginServlet extends HttpServlet {
         newUser.setEmail(username);
         newUser.setPassword(password);
         if (dao.IsRegistered(newUser)){
+            if (dao.isAdmin(newUser)){
+                newUser.setRole(Role.ADMIN);
+            }else {
+                newUser.setRole(Role.CLIENT);
+            }
             HttpSession session = request.getSession();
-            session.setAttribute("userId",dao.getUsersId(newUser));
+            session.setAttribute("user",newUser);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
             dispatcher.forward(request,response);
         }
