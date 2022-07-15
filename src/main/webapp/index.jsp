@@ -14,9 +14,8 @@
 <br/>
 
 <c:if test="${sessionScope.user.getRole().equals(Role.ADMIN)}">
-    <a href="manageShop.jsp">Manage shop</a>
+    <a href="/manageShop">Manage shop</a>
 </c:if>
-<a href="hello-servlet">Show message</a>
 <a href="listOfProducts">List Of Products</a>
 <a href="loginServlet">Login</a>
 <a href="/shoppingCart">Cart</a>

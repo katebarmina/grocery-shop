@@ -8,6 +8,8 @@ public class Product {
     private double price;
     private String brand;
 
+    private long categoryId;
+
     public Product() {
     }
 
@@ -16,6 +18,14 @@ public class Product {
         this.name = name;
         this.price = price;
         this.brand = brand;
+    }
+
+    public long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(long category_id) {
+        this.categoryId = category_id;
     }
 
     public long getId() {

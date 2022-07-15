@@ -64,4 +64,57 @@ public class ProductsDAO {
         }
         return product;
     }
-}
+
+    public boolean addProduct(Product product){
+        String addProduct = "INSERT INTO products (product_name,price,brand,category_id) VALUES (?,?,?,?);";
+        int addedRows = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/shop", "root", "12345");
+            PreparedStatement statement = connection.prepareStatement(addProduct);
+            statement.setString(1,product.getName());
+            statement.setDouble(2,product.getPrice());
+            statement.setString(3,product.getBrand());
+            statement.setLong(4,product.getCategoryId());
+            addedRows = statement.executeUpdate();
+
+        }catch (SQLException | ClassNotFoundException ex){
+            ex.printStackTrace();
+        }
+        return addedRows != 0;
+    }
+
+    public boolean updateProduct(Product product){
+        String updateProduct = "UPDATE products SET product_name = ?,price = ?,brand = ?,category_id = ?;";
+         int affectedRows = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/shop", "root", "12345");
+            PreparedStatement statement = connection.prepareStatement(updateProduct);
+            statement.setString(1,product.getName());
+            statement.setDouble(2,product.getPrice());
+            statement.setString(3,product.getBrand());
+            statement.setLong(4,product.getCategoryId());
+            affectedRows = statement.executeUpdate();
+        }catch (SQLException | ClassNotFoundException ex){
+            ex.printStackTrace();
+        }
+        return affectedRows!=0;
+    }
+
+    public boolean deleteProduct(String productId){
+        String deleteProduct = "DELETE FROM products WHERE product_id = "+productId+";";
+        int affectedRows = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/shop", "root", "12345");
+            PreparedStatement statement = connection.prepareStatement(deleteProduct);
+            affectedRows = statement.executeUpdate();
+        }catch (SQLException | ClassNotFoundException ex){
+            ex.printStackTrace();
+        }
+        return affectedRows!=0;
+    }
+    }
+
+
