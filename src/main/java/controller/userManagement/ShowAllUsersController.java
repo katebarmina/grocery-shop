@@ -1,4 +1,4 @@
-package servlets.userManagement;
+package controller.userManagement;
 
 import dao.UserDAO;
 import models.User;
@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/showAllUsers")
-public class ShowAllUsersServlet extends HttpServlet {
+public class ShowAllUsersController extends HttpServlet {
     private final UserDAO userDao = new UserDAO();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

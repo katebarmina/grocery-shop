@@ -1,4 +1,4 @@
-package servlets;
+package controller;
 
 import dao.UserDAO;
 import models.Role;
@@ -9,8 +9,8 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "registrationServlet", value = "/registrationServlet")
-public class RegistrationServlet extends HttpServlet {
+@WebServlet("/registration")
+public class RegistrationController extends HttpServlet {
     private UserDAO dao = new UserDAO();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -27,7 +27,6 @@ public class RegistrationServlet extends HttpServlet {
 
         User user = new User(email,password,Role.CLIENT);
         dao.registerUser(user);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/welcome.jsp");
-        dispatcher.forward(request,response);
+        response.sendRedirect(request.getContextPath()+"/index.jsp");
     }
 }

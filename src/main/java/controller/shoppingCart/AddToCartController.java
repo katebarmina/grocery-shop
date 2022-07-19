@@ -1,4 +1,4 @@
-package servlets.shoppingCart;
+package controller.shoppingCart;
 
 import dao.ProductsDAO;
 import dao.ShoppingCartDao;
@@ -11,7 +11,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 
 @WebServlet("/shoppingCart/add")
-public class AddToCartServlet extends HttpServlet {
+public class AddToCartController extends HttpServlet {
     private final String USER_ID = "userId";
     private ProductsDAO productsDao = new ProductsDAO();
     private ShoppingCartDao cartDao = new ShoppingCartDao();

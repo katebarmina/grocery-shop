@@ -17,7 +17,7 @@
     <a href="/manageShop">Manage shop</a>
 </c:if>
 <a href="listOfProducts">List Of Products</a>
-<a href="loginServlet">Login</a>
+<a href="/login">Login</a>
 <a href="/shoppingCart">Cart</a>
 
 </body>

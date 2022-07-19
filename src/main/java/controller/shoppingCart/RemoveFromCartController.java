@@ -1,4 +1,4 @@
-package servlets.shoppingCart;
+package controller.shoppingCart;
 
 import dao.ProductsDAO;
 import dao.ShoppingCartDao;
@@ -11,7 +11,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 
 @WebServlet("/shoppingCart/remove")
-public class RemoveFromCartServlet extends HttpServlet {
+public class RemoveFromCartController extends HttpServlet {
     private final ProductsDAO productsdao = new ProductsDAO();
     private final ShoppingCartDao cartDao = new ShoppingCartDao();
     @Override

@@ -1,4 +1,4 @@
-package servlets.userManagement;
+package controller.userManagement;
 
 import dao.UserDAO;
 
@@ -8,7 +8,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 
 @WebServlet("/manageShop/deleteUser")
-public class DeleteUserServlet extends HttpServlet {
+public class DeleteUserController extends HttpServlet {
     private final UserDAO userDao = new UserDAO();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

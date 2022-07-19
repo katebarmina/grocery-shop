@@ -10,14 +10,24 @@ public class Product {
 
     private long categoryId;
 
+    private String image;
+
     public Product() {
     }
 
-    public Product(long id, String name, double price, String brand) {
-        this.id = id;
+    public Product(String name, double price, String brand, long categoryId) {
         this.name = name;
         this.price = price;
         this.brand = brand;
+        this.categoryId = categoryId;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public long getCategoryId() {

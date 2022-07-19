@@ -8,13 +8,12 @@ import java.util.List;
 
 public class ProductsDAO {
 
-    public List<Product> showAllProducts() {
+    public List<Product> getAllProducts() {
         List<Product> listOfProducts = new ArrayList<>();
-        final String SHOW_PRODUCTS = "SELECT product_id,product_name,price,brand  FROM products ;";
+        final String SHOW_PRODUCTS = "SELECT product_id,product_name,price,brand,image FROM products ;";
         Connection connection = null;
         ResultSet resultSet = null;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/shop","root","12345");
             PreparedStatement statement = connection.prepareStatement(SHOW_PRODUCTS);
             resultSet = statement.executeQuery();
@@ -24,10 +23,11 @@ public class ProductsDAO {
                 product.setName(resultSet.getString(2));
                 product.setPrice(resultSet.getDouble(3));
                 product.setBrand(resultSet.getString(4));
+                product.setImage(resultSet.getString(5));
                 listOfProducts.add(product);
             }
 
-        } catch (SQLException | ClassNotFoundException ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }finally {
             try {
@@ -49,7 +49,6 @@ public class ProductsDAO {
         String FIND_USER = "SELECT * FROM products where product_id = '"+productId+"';";
         Product product = new Product();
         try {
-            Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/shop","root","12345");
             PreparedStatement statement = connection.prepareStatement(FIND_USER);
             ResultSet resultSet = statement.executeQuery();
@@ -58,8 +57,9 @@ public class ProductsDAO {
                 product.setName(resultSet.getString(2));
                 product.setPrice(resultSet.getDouble(3));
                 product.setBrand(resultSet.getString(4));
+                product.setCategoryId(resultSet.getInt(5));
             }
-        }catch (SQLException | ClassNotFoundException ex){
+        }catch (SQLException ex){
             throw new RuntimeException(ex);
         }
         return product;
@@ -69,7 +69,6 @@ public class ProductsDAO {
         String addProduct = "INSERT INTO products (product_name,price,brand,category_id) VALUES (?,?,?,?);";
         int addedRows = 0;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/shop", "root", "12345");
             PreparedStatement statement = connection.prepareStatement(addProduct);
             statement.setString(1,product.getName());
@@ -78,25 +77,24 @@ public class ProductsDAO {
             statement.setLong(4,product.getCategoryId());
             addedRows = statement.executeUpdate();
 
-        }catch (SQLException | ClassNotFoundException ex){
+        }catch (SQLException  ex){
             ex.printStackTrace();
         }
         return addedRows != 0;
     }
 
-    public boolean updateProduct(Product product){
-        String updateProduct = "UPDATE products SET product_name = ?,price = ?,brand = ?,category_id = ?;";
+    public boolean updateProduct(Product product,String productId){
+        String updateProduct = "UPDATE products SET product_name = ?,price = ?,brand = ?,category_id = ? WHERE product_id ="+productId +";";
          int affectedRows = 0;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/shop", "root", "12345");
             PreparedStatement statement = connection.prepareStatement(updateProduct);
             statement.setString(1,product.getName());
             statement.setDouble(2,product.getPrice());
             statement.setString(3,product.getBrand());
-            statement.setLong(4,product.getCategoryId());
+            statement.setInt(4, (int) product.getCategoryId());
             affectedRows = statement.executeUpdate();
-        }catch (SQLException | ClassNotFoundException ex){
+        }catch (SQLException ex){
             ex.printStackTrace();
         }
         return affectedRows!=0;
@@ -106,11 +104,10 @@ public class ProductsDAO {
         String deleteProduct = "DELETE FROM products WHERE product_id = "+productId+";";
         int affectedRows = 0;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/shop", "root", "12345");
             PreparedStatement statement = connection.prepareStatement(deleteProduct);
             affectedRows = statement.executeUpdate();
-        }catch (SQLException | ClassNotFoundException ex){
+        }catch (SQLException ex){
             ex.printStackTrace();
         }
         return affectedRows!=0;

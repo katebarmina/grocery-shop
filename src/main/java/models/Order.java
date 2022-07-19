@@ -3,80 +3,40 @@ package models;
 import java.util.Date;
 
 public class Order {
-    private User user;
-    private ShoppingCart cart;
 
-    private String address;
-    private String cardNumber;
-    private String cardHolderName;
-    private String mmYY;
-    private int cvv;
+    private long orderId;
+    private long userId;
+    private Status status;
 
-
-
-    public Order(User user, ShoppingCart cart,String address, String cardNumber, String cardHolderName, String mmYY, int cvv) {
-        this.user = user;
-        this.cart = cart;
-        this.cardNumber = cardNumber;
-        this.cardHolderName = cardHolderName;
-        this.mmYY = mmYY;
-        this.cvv = cvv;
-        this.address = address;
+    public Order() {
     }
 
-    public User getUser() {
-        return user;
+    public Order(long userId, Status status) {
+        this.userId = userId;
+        this.status = status;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public long getOrderId() {
+        return orderId;
     }
 
-    public ShoppingCart getCart() {
-        return cart;
+    public void setOrderId(long orderId) {
+        this.orderId = orderId;
     }
 
-    public void setCart(ShoppingCart cart) {
-        this.cart = cart;
+    public long getUserId() {
+        return userId;
     }
 
-    public String getCardNumber() {
-        return cardNumber;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
+    public Status getStatus() {
+        return status;
     }
 
-    public String getCardHolderName() {
-        return cardHolderName;
-    }
-
-    public void setCardHolderName(String cardHolderName) {
-        this.cardHolderName = cardHolderName;
-    }
-
-    public String getMmYY() {
-        return mmYY;
-    }
-
-    public void setMmYY(String mmYY) {
-        this.mmYY = mmYY;
-    }
-
-    public int getCvv() {
-        return cvv;
-    }
-
-    public void setCvv(int cvv) {
-        this.cvv = cvv;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

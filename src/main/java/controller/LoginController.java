@@ -1,4 +1,4 @@
-package servlets;
+package controller;
 
 import dao.UserDAO;
 import models.Role;
@@ -11,8 +11,8 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 
 
-@WebServlet(name = "loginServlet", value = "/loginServlet")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/login")
+public class LoginController extends HttpServlet {
 
     private final UserDAO dao = new UserDAO();
 
@@ -31,6 +31,7 @@ public class LoginServlet extends HttpServlet {
         newUser.setEmail(username);
         newUser.setPassword(password);
         if (dao.IsRegistered(newUser)){
+            newUser.setId(dao.getUsersId(newUser));
             if (dao.isAdmin(newUser)){
                 newUser.setRole(Role.ADMIN);
             }else {

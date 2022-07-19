@@ -5,7 +5,7 @@
 </head>
 <body>
 <div class="form">
-    <form action="<%=request.getContextPath()%>/loginServlet" method="post">
+    <form action="<%=request.getContextPath()%>/login" method="post">
         <input type="email" required placeholder="Email" name="email"><br>
         <input type = "password" required placeholder = "password" name= "password"><br>
         <input class="button" type="submit" value="Log in">

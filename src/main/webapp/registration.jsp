@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="container">
-    <form action="<%=request.getContextPath()%>/registrationServlet" method="post">
+    <form action="<%=request.getContextPath()%>/registration" method="post">
         <input type="email" required placeholder="Enter Email " name="email"><br>
         <input type="password" required placeholder="Password" name="password"><br>
         <input class="button" type="submit" value="Sign up">

@@ -11,11 +11,12 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>Store management</title>
 
-    <a href="listOfProducts">List Of Products</a>
-    <a href="loginServlet">Login</a>
+    <a href="listOfProducts">Manage products</a>
+    <a href="/listOfOrders">Manage orders</a>
+    <a href="/login">Login</a>
     <a href="/shoppingCart">Cart</a>
 </head>
 <body>
-<a href="/showAllUsers">List of Users</a>
+<a href="/showAllUsers">Manage users</a>
 </body>
 </html>

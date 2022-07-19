@@ -1,20 +1,15 @@
-package servlets.shoppingCart;
+package controller.shoppingCart;
 import models.Item;
-import models.Product;
 import models.ShoppingCart;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 @WebServlet("/shoppingCart")
-public class ShowCartServlet extends HttpServlet {
+public class ShowCartController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     response.setContentType("text/html");
