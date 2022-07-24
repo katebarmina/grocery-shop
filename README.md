@@ -1,6 +1,6 @@
 
 <p align="center" font-weight ="bolder">
-   ONLINE PRODUCT SHOP
+   GROCERY SHOP
 </p>
 <img width="960" alt="Screenshot_2" src="https://user-images.githubusercontent.com/89963017/180646495-a47c0ad6-7129-426c-bcbe-82e4feca2594.png">
 
@@ -13,7 +13,7 @@
 
 ## Description
 ***
-This is a simplified version of online product shop that has the following functionality:
+This is a simplified version of online grocery shop that has the following functionality:
 
 *  Registration, login and logout
 *  RBAC authorization
