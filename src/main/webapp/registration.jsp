@@ -8,13 +8,23 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <link rel="stylesheet" href="css/style.css">
     <title>Registration</title>
 </head>
 <body>
-<div class="container">
+
+<div class="authorization-container">
+    <h1>REGISTRATION</h1>
     <form action="<%=request.getContextPath()%>/registration" method="post">
-        <input type="email" required placeholder="Enter Email " name="email"><br>
-        <input type="password" required placeholder="Password" name="password"><br>
+       <div class="inputBox">
+           <span>Email:</span>
+           <input type="email" required placeholder="Enter Email " name="email">
+       </div>
+        <div class="inputBox">
+            <span>Password:</span>
+            <input type="password" required placeholder="Password" name="password">
+        </div>
+
         <input class="button" type="submit" value="Sign up">
     </form>
 </div>

@@ -5,20 +5,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>JSP - Hello World</title>
+
+    <title>Home</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<h1><%= "Home" %>
-</h1>
-<br/>
+<div class="header">
+        <a href="index.jsp">HOME</a>
+        <c:if test="${sessionScope.user.getRole().equals(Role.ADMIN)}">
+            <a href="/manageShop">MANAGE SHOP</a>
+        </c:if>
+    <c:if test="${sessionScope.user!=null}">
+    <a href="/logout">LOG OUT</a>
+    </c:if>
+    <c:if test="${sessionScope.user == null}">
+        <a href="/login">LOG IN</a>
+        <a href="/registration">REGISTER</a>
+    </c:if>
+    <c:if test="${sessionScope.user != null && sessionScope.user.getRole().equals(Role.CLIENT)}">
+        <a href="/showUserOrders">MY ORDERS</a>
+    </c:if>
+    <c:if test="${sessionScope.user == null || sessionScope.user.getRole().equals(Role.CLIENT)}">
+        <div class="icon">
+            <a href="/shoppingCart"><img  src="images/mainPage/cart-79-512.png"></a>
+        </div>
+    </c:if>
 
-<c:if test="${sessionScope.user.getRole().equals(Role.ADMIN)}">
-    <a href="/manageShop">Manage shop</a>
-</c:if>
-<a href="listOfProducts">List Of Products</a>
-<a href="/login">Login</a>
-<a href="/shoppingCart">Cart</a>
+</div>
+
+<div class="mainPic-container">
+    <img src="images/mainPage/background.jpg" alt="cart with products">
+    <form action="listOfProducts">
+        <h3>Better Products At The Right Price</h3>
+
+        <button type="submit" value="Shop now">Shop Now</button>
+    </form>
+</div>
 
 </body>
 </html>

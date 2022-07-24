@@ -1,10 +1,10 @@
-package dao;
+package dao.impl;
 
 import models.Item;
 import models.Product;
 import models.ShoppingCart;
 
-public class ShoppingCartDao {
+public class ShoppingCartDAOImpl {
 
     public ShoppingCart add(ShoppingCart cart,Product product){
         if (cart.getProducts().stream().noneMatch(item -> item.getProduct().equals(product))) {

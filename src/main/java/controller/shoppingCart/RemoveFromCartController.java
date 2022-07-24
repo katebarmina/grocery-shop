@@ -1,7 +1,7 @@
 package controller.shoppingCart;
 
-import dao.ProductsDAO;
-import dao.ShoppingCartDao;
+import dao.impl.ProductsDAOImpl;
+import dao.impl.ShoppingCartDAOImpl;
 import models.Product;
 import models.ShoppingCart;
 
@@ -12,8 +12,8 @@ import java.io.IOException;
 
 @WebServlet("/shoppingCart/remove")
 public class RemoveFromCartController extends HttpServlet {
-    private final ProductsDAO productsdao = new ProductsDAO();
-    private final ShoppingCartDao cartDao = new ShoppingCartDao();
+    private final ProductsDAOImpl productsdao = new ProductsDAOImpl();
+    private final ShoppingCartDAOImpl cartDao = new ShoppingCartDAOImpl();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     HttpSession session = request.getSession();

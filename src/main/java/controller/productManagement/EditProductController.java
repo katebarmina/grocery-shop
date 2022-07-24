@@ -1,6 +1,6 @@
 package controller.productManagement;
 
-import dao.ProductsDAO;
+import dao.impl.ProductsDAOImpl;
 import models.Product;
 
 import javax.servlet.*;
@@ -10,7 +10,7 @@ import java.io.IOException;
 
 @WebServlet("/editProduct")
 public class EditProductController extends HttpServlet {
-    private final ProductsDAO productsDao = new ProductsDAO();
+    private final ProductsDAOImpl productsDaoImpl = new ProductsDAOImpl();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String productId = request.getParameter("productId");
@@ -26,7 +26,7 @@ public class EditProductController extends HttpServlet {
         String brand = request.getParameter("brand");
         long categoryId = Long.parseLong(request.getParameter("categoryId"));
         Product product = new Product(name,price,brand,categoryId);
-        productsDao.updateProduct(product,productId);
+        productsDaoImpl.updateProduct(product,productId);
         response.sendRedirect(request.getContextPath()+"/listOfProducts");
 
 

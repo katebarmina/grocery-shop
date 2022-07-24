@@ -8,23 +8,23 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Provide further information</title>
+    <title>Order</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <div class="container">
     <form action="/order" method="post">
         <div class="inputBox">
-            <span>Card number</span>
+            <span>CARD NUMBER</span>
             <input type="text" maxlength="16" name="cardNumber">
         </div>
         <div class="inputBox">
-            <span>Card holder</span>
+            <span>CARD HOLDER</span>
             <input type="text" name="cardHolderName">
         </div>
         <div class="flexbox">
             <div class="inputBox">
-                <span>Expiration month</span>
+                <span>EXPIRATION MONTH</span>
                 <select name="month">
                     <option value="01">01</option>
                     <option value="02">02</option>
@@ -43,7 +43,7 @@
         </div>
         <div class="flexBox">
             <div class="inputBox">
-                <span>Expiration yy</span>
+                <span>EXPIRATION YY</span>
                 <select name="year">
                     <option value="2023">2023</option>
                     <option value="2024">2024</option>
@@ -58,7 +58,7 @@
             <input type="text" maxlength="4" name="cvv">
         </div>
 
-        <input class="button" type="submit" value="Pay">
+        <input class="button" type="submit" value="PAY">
     </form>
 </div>
 </body>

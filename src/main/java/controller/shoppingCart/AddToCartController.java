@@ -1,7 +1,7 @@
 package controller.shoppingCart;
 
-import dao.ProductsDAO;
-import dao.ShoppingCartDao;
+import dao.impl.ProductsDAOImpl;
+import dao.impl.ShoppingCartDAOImpl;
 import models.Product;
 import models.ShoppingCart;
 
@@ -13,8 +13,8 @@ import java.io.IOException;
 @WebServlet("/shoppingCart/add")
 public class AddToCartController extends HttpServlet {
     private final String USER_ID = "userId";
-    private ProductsDAO productsDao = new ProductsDAO();
-    private ShoppingCartDao cartDao = new ShoppingCartDao();
+    private ProductsDAOImpl productsDaoImpl = new ProductsDAOImpl();
+    private ShoppingCartDAOImpl cartDao = new ShoppingCartDAOImpl();
 
 
     @Override
@@ -26,7 +26,7 @@ public class AddToCartController extends HttpServlet {
            session.setAttribute("cart", cart);
        }
            String productID = req.getParameter("productId");
-           Product product = productsDao.getProductById(productID);
+           Product product = productsDaoImpl.getProductById(productID);
            cart = cartDao.add(cart,product);
            session.setAttribute("cart",cart);
            resp.sendRedirect(req.getContextPath()+"/listOfProducts");

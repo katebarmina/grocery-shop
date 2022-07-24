@@ -8,11 +8,11 @@
 <body>
 <form method="post" action="/editProduct">
     <input type="hidden" name="productId" value="${productId}">
-   Product name:<input type="text"  name="productName"><br>
-    Price:<input type = "number" min="0" step=".01" name= "price"><br>
-    Brand:<input type="text" name="brand"><br>
-    Category id:<input type="number" name="categoryId"><br>
-    <input class="button" type="submit" value="Accept changes">
+   PRODUCT NAME:<input type="text"  name="productName"><br>
+    PRICE:<input type = "number" min="0" step=".01" name= "price"><br>
+    BRAND:<input type="text" name="brand"><br>
+    CATEGORY ID:<input type="number" name="categoryId"><br>
+    <input class="button" type="submit" value="ACCEPT CHANGES">
 </form>
 
 </body>

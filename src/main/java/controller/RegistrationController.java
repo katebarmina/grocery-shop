@@ -1,6 +1,6 @@
 package controller;
 
-import dao.UserDAO;
+import dao.impl.UserDAOImpl;
 import models.Role;
 import models.User;
 
@@ -11,7 +11,7 @@ import java.io.IOException;
 
 @WebServlet("/registration")
 public class RegistrationController extends HttpServlet {
-    private UserDAO dao = new UserDAO();
+    private UserDAOImpl dao = new UserDAOImpl();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/registration.jsp");

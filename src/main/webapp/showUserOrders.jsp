@@ -1,16 +1,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="models.Role" %>
 <%--
   Created by IntelliJ IDEA.
   User: Kate
-  Date: 19.07.2022
-  Time: 21:15
+  Date: 23.07.2022
+  Time: 19:09
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-<link rel="stylesheet" href="css/style.css">
+    <title>My orders</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <div class="header">
@@ -24,7 +24,7 @@
     <c:if test="${sessionScope.user == null}">
         <a href="/login">LOG IN</a>
     </c:if>
-    <c:if test="${sessionScope.user!= null && sessionScope.user.getRole().equals(Role.CLIENT)}">
+    <c:if test="${sessionScope.user != null && sessionScope.user.getRole().equals(Role.CLIENT)}">
         <a href="/showUserOrders">MY ORDERS</a>
     </c:if>
     <c:if test="${sessionScope.user == null || sessionScope.user.getRole().equals(Role.CLIENT)}">
@@ -35,7 +35,23 @@
 </div>
 
 <div class="container">
-    <h1>Thank you for your order!<br>It will be shipped to you soon! </h1>
-</div>
+    <h1>MY ORDERS</h1>
+    <table class="content-table">
+        <thead>
+        <tr>
+            <th>ORDER ID</th>
+            <th>STATUS</th>
+        </tr>
+        </thead>
+        <tbody><c:forEach var="order" items="${userOrders}">
+            <tr>
+                <td><c:out value="${order.orderId}"/></td>
+                <td><c:out value="${order.status}"/></td>
+            </tr>
+
+        </c:forEach>
+        </tbody>
+    </table>
+    </div>
 </body>
 </html>

@@ -1,6 +1,6 @@
 package controller;
 
-import dao.UserDAO;
+import dao.impl.UserDAOImpl;
 import models.Role;
 import models.User;
 
@@ -14,7 +14,7 @@ import java.io.IOException;
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
 
-    private final UserDAO dao = new UserDAO();
+    private final UserDAOImpl dao = new UserDAOImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -30,7 +30,7 @@ public class LoginController extends HttpServlet {
         User newUser = new User();
         newUser.setEmail(username);
         newUser.setPassword(password);
-        if (dao.IsRegistered(newUser)){
+        if (dao.IsRegistered(newUser) & dao.checkPassword(newUser)){
             newUser.setId(dao.getUsersId(newUser));
             if (dao.isAdmin(newUser)){
                 newUser.setRole(Role.ADMIN);
@@ -43,10 +43,10 @@ public class LoginController extends HttpServlet {
             dispatcher.forward(request,response);
         }
         else {
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/userDoesntExist.jsp");
+            int incorrectLog = 1;
+            request.setAttribute("incorrectLog",incorrectLog);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
             dispatcher.forward(request,response);
         }
-
-
     }
 }

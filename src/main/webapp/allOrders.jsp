@@ -1,40 +1,54 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Kate
-  Date: 19.07.2022
-  Time: 21:27
-  To change this template use File | Settings | File Templates.
---%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Manage orders</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<a href="listOfProducts">List Of Products</a>
-<a href="/login">Login</a>
-<a href="/shoppingCart">Cart</a>
-<br>
+<div class="header">
+    <a href="index.jsp">HOME</a>
+    <a href="listOfProducts">MANAGE PRODUCT</a>
+    <a href="/listOfOrders">MANAGE ORDERS</a>
+    <a href="/showAllUsers">MANAGE USERS</a>
+    <a href="/logout">LOG OUT</a>
+</div>
+<div class="container">
+    <h1>ALL ORDERS</h1>
+    <table class="content-table">
+        <thead>
+        <tr>
+            <th>ORDER ID</th>
+            <th>USER ID</th>
+            <th>STATUS</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody><c:forEach var="order" items="${orders}">
+            <tr>
+                <td><c:out value="${order.orderId}"/></td>
+                <td><c:out value="${order.userId}"/></td>
+                <td><c:out value="${order.status}"/></td>
+                <td><a href="${pageContext.request.contextPath}/deleteOrder?orderId=${order.orderId}">Delete</a></td>
+                <td><form method="post" action="/updateStatus?orderId=${order.orderId}">
+                    <select id="orderStatus" name="orderStatus">
+                        <option value="PAYMENT_RECEIVED">PAYMENT_RECEIVED</option>
+                        <option value="PAYMENT_FAILED">PAYMENT_FAILED</option>
+                        <option value="PROCESSING">PROCESSING</option>
+                        <option value="SHIPPED">SHIPPED</option>
+                        <option value="DELIVERED">DELIVERED</option>
+                        <option value="CANCELED">CANCELED</option>
+                    </select>
+                    <button type="submit">SAVE CHANGES</button>
+                </form></td>
 
-<c:forEach var="order" items="${orders}">
-    <c:out value="${order.orderId}"/>
-    <c:out value="${order.userId}"/>
-    <c:out value="${order.status}"/>
-    <a href="${pageContext.request.contextPath}/deleteOrder?orderId=${order.orderId}">Delete</a>
-    <br>
-    Change status:
-    <form method="post" action="/updateStatus?orderId=${order.orderId}">
-            <select id="orderStatus" name="orderStatus">
-                <option value="PAYMENT_RECEIVED">PAYMENT_RECEIVED</option>
-                <option value="PAYMENT_FAILED">PAYMENT_FAILED</option>
-                <option value="PROCESSING">PROCESSING</option>
-                <option value="SHIPPED">SHIPPED</option>
-                <option value="DELIVERED">DELIVERED</option>
-                <option value="CANCELED">CANCELED</option>
-            </select>
-        <button type="submit">Save changes</button>
-    </form>
-</c:forEach>
+            </tr>
+
+        </c:forEach></tbody>
+
+    </table>
+</div>
+
 </body>
 </html>

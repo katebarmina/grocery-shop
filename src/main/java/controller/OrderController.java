@@ -1,7 +1,7 @@
 package controller;
 
-import dao.OrderDao;
-import dao.UserDAO;
+import dao.impl.OrderDAOImpl;
+import dao.impl.UserDAOImpl;
 import models.Order;
 import models.ShoppingCart;
 import models.Status;
@@ -14,11 +14,16 @@ import java.io.IOException;
 
 @WebServlet("/order")
 public class OrderController extends HttpServlet {
-    private final OrderDao orderDao = new OrderDao();
-    private UserDAO userDAO = new UserDAO();
+    private final OrderDAOImpl orderDaoImpl = new OrderDAOImpl();
+    private UserDAOImpl userDAOImpl = new UserDAOImpl();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-     request.getRequestDispatcher("/order.jsp").forward(request,response);
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        if (user == null){
+            request.getRequestDispatcher(request.getContextPath()+"/login").forward(request,response);
+        }
+     request.getRequestDispatcher("/orderInfoForm.jsp").forward(request,response);
 
     }
 
@@ -28,11 +33,8 @@ public class OrderController extends HttpServlet {
         HttpSession session = request.getSession();
         ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
         User user = (User) session.getAttribute("user");
-        if (user == null){
-            request.getRequestDispatcher("/login").forward(request,response);
-        }
         Order order = new Order(user.getId(), Status.PROCESSING);
-        orderDao.createOrder(order);
+        orderDaoImpl.createOrder(order);
         cart = null;
         request.getRequestDispatcher(request.getContextPath()+"orderCompleted.jsp").forward(request,response);
 

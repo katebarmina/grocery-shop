@@ -1,6 +1,6 @@
 package controller.orderManagement;
 
-import dao.OrderDao;
+import dao.impl.OrderDAOImpl;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -8,12 +8,12 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 
 @WebServlet("/deleteOrder")
-public class deleteOrderController extends HttpServlet {
-    private final OrderDao orderDao = new OrderDao();
+public class DeleteOrderController extends HttpServlet {
+    private final OrderDAOImpl orderDaoImpl = new OrderDAOImpl();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String orderId = request.getParameter("orderId");
-    orderDao.deleteOrder(orderId);
+    orderDaoImpl.deleteOrder(orderId);
     response.sendRedirect(request.getContextPath()+"/listOfOrders");
     }
 

@@ -1,6 +1,6 @@
 package controller.productManagement;
 
-import dao.ProductsDAO;
+import dao.impl.ProductsDAOImpl;
 import models.Product;
 
 import javax.servlet.*;
@@ -10,7 +10,7 @@ import java.io.IOException;
 
 @WebServlet("/addProduct")
 public class AddProductController extends HttpServlet {
-    private final ProductsDAO productsDao = new ProductsDAO();
+    private final ProductsDAOImpl productsDaoImpl = new ProductsDAOImpl();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
      response.sendRedirect(request.getContextPath()+"/addNewProduct.jsp");
@@ -23,7 +23,7 @@ public class AddProductController extends HttpServlet {
         String brand = request.getParameter("brand");
         long categoryId = Long.parseLong(request.getParameter("categoryId"));
         Product newProduct = new Product(name,price,brand,categoryId);
-        productsDao.addProduct(newProduct);
+        productsDaoImpl.addProduct(newProduct);
         response.sendRedirect(request.getContextPath()+"/listOfProducts");
     }
 }

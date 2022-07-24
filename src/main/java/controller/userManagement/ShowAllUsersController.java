@@ -1,6 +1,6 @@
 package controller.userManagement;
 
-import dao.UserDAO;
+import dao.impl.UserDAOImpl;
 import models.User;
 
 import javax.servlet.*;
@@ -11,10 +11,10 @@ import java.util.List;
 
 @WebServlet("/showAllUsers")
 public class ShowAllUsersController extends HttpServlet {
-    private final UserDAO userDao = new UserDAO();
+    private final UserDAOImpl userDaoImpl = new UserDAOImpl();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-   List<User> users = userDao.getAllUsers();
+   List<User> users = userDaoImpl.getAllUsers();
    request.setAttribute("users",users);
    request.getRequestDispatcher("/showAllUsers.jsp").forward(request,response);
     }
