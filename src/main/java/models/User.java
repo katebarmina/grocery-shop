@@ -10,6 +10,9 @@ public class User {
 
     private Role role;
 
+    public User() {
+    }
+
     public User(String email, String password, Role role) {
         this.email = email;
         this.password = password;
@@ -32,8 +35,6 @@ public class User {
         this.id = id;
     }
 
-    public User() {
-    }
 
     public String getEmail() {
         return email;

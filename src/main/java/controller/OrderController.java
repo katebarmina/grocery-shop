@@ -1,7 +1,6 @@
 package controller;
 
 import dao.impl.OrderDAOImpl;
-import dao.impl.UserDAOImpl;
 import models.Order;
 import models.ShoppingCart;
 import models.Status;
@@ -15,7 +14,7 @@ import java.io.IOException;
 @WebServlet("/order")
 public class OrderController extends HttpServlet {
     private final OrderDAOImpl orderDaoImpl = new OrderDAOImpl();
-    private UserDAOImpl userDAOImpl = new UserDAOImpl();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -36,7 +35,7 @@ public class OrderController extends HttpServlet {
         Order order = new Order(user.getId(), Status.PROCESSING);
         orderDaoImpl.createOrder(order);
         cart = null;
-        request.getRequestDispatcher(request.getContextPath()+"orderCompleted.jsp").forward(request,response);
+        response.sendRedirect(request.getContextPath()+"/orderCompleted.jsp");
 
     }
 }

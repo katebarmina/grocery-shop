@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface UserDAO {
 
+    boolean isAdmin(User user);
+
     boolean registerUser(User user) throws DAOException;
 
     boolean IsRegistered(User user) throws DAOException;

@@ -9,7 +9,7 @@ import java.io.IOException;
 public class ManageShopController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-     request.getRequestDispatcher("/shopManagement.jsp").forward(request,response);
+     request.getRequestDispatcher(request.getContextPath()+"/shopManagement.jsp").forward(request,response);
     }
 
 }

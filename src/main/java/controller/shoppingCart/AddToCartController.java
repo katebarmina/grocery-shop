@@ -1,5 +1,6 @@
 package controller.shoppingCart;
 
+import dao.ProductDAO;
 import dao.impl.ProductsDAOImpl;
 import dao.impl.ShoppingCartDAOImpl;
 import models.Product;
@@ -12,25 +13,23 @@ import java.io.IOException;
 
 @WebServlet("/shoppingCart/add")
 public class AddToCartController extends HttpServlet {
-    private final String USER_ID = "userId";
-    private ProductsDAOImpl productsDaoImpl = new ProductsDAOImpl();
-    private ShoppingCartDAOImpl cartDao = new ShoppingCartDAOImpl();
+    private final ProductDAO productDAO = new ProductsDAOImpl();
+    private final ShoppingCartDAOImpl cartDao = new ShoppingCartDAOImpl();
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-       ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
-       if (cart == null) {
-           cart = new ShoppingCart();
-           session.setAttribute("cart", cart);
-       }
-           String productID = req.getParameter("productId");
-           Product product = productsDaoImpl.getProductById(productID);
-           cart = cartDao.add(cart,product);
-           session.setAttribute("cart",cart);
-           resp.sendRedirect(req.getContextPath()+"/listOfProducts");
-
+        ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new ShoppingCart();
+            session.setAttribute("cart", cart);
+        }
+        String productID = req.getParameter("productId");
+        Product product = productDAO.getProductById(productID);
+        cart = cartDao.add(cart, product);
+        session.setAttribute("cart", cart);
+        resp.sendRedirect(req.getContextPath() + "/listOfProducts");
 
 
     }

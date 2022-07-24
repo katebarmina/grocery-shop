@@ -1,5 +1,6 @@
 package controller;
 
+import dao.UserDAO;
 import dao.impl.UserDAOImpl;
 import models.Role;
 import models.User;
@@ -14,12 +15,11 @@ import java.io.IOException;
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
 
-    private final UserDAOImpl dao = new UserDAOImpl();
+    private final UserDAO userDAO = new UserDAOImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher dispatcher = req.getRequestDispatcher("/login.jsp");
-        dispatcher.forward(req,resp);
+    req.getRequestDispatcher("/login.jsp").forward(req,resp);
     }
 
     @Override
@@ -30,23 +30,21 @@ public class LoginController extends HttpServlet {
         User newUser = new User();
         newUser.setEmail(username);
         newUser.setPassword(password);
-        if (dao.IsRegistered(newUser) & dao.checkPassword(newUser)){
-            newUser.setId(dao.getUsersId(newUser));
-            if (dao.isAdmin(newUser)){
+        if (userDAO.IsRegistered(newUser) & userDAO.checkPassword(newUser)){
+            newUser.setId(userDAO.getUsersId(newUser));
+            if (userDAO.isAdmin(newUser)){
                 newUser.setRole(Role.ADMIN);
             }else {
                 newUser.setRole(Role.CLIENT);
             }
             HttpSession session = request.getSession();
             session.setAttribute("user",newUser);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
-            dispatcher.forward(request,response);
+            request.getRequestDispatcher("/index.jsp").forward(request,response);
         }
         else {
             int incorrectLog = 1;
             request.setAttribute("incorrectLog",incorrectLog);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
-            dispatcher.forward(request,response);
+            request.getRequestDispatcher("/login.jsp").forward(request,response);
         }
     }
 }

@@ -1,6 +1,6 @@
 package dao.impl;
 
-
+import dao.UserDAO;
 import exception.DAOException;
 import models.Role;
 import models.User;
@@ -10,18 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class UserDAOImpl {
+public class UserDAOImpl implements UserDAO {
 
     private final String URL = "jdbc:mysql://localhost:3306/shop";
     private final String USER = "root";
     private final String PASSWORD = "12345";
 
+    @Override
     public boolean isAdmin(User user) {
         String ADMIN_EMAIL = "admin@gmail.com";
         String ADMIN_PASSWORD = "12345";
         return user.getEmail().equals(ADMIN_EMAIL) && user.getPassword().equals(ADMIN_PASSWORD);
     }
 
+    @Override
     public boolean registerUser(User user) throws DAOException {
         int addedRows;
         final String insertSql = "INSERT INTO users (email,password,user_role) VALUES (?,?,?);";
@@ -35,7 +37,7 @@ public class UserDAOImpl {
             statement.setString(2, user.getPassword());
             statement.setString(3, String.valueOf(user.getRole()));
             addedRows = statement.executeUpdate();
-
+        return addedRows!=0;
         } catch (SQLException | ClassNotFoundException ex) {
             throw new DAOException("Cannot register user", ex);
         } finally {
@@ -46,13 +48,14 @@ public class UserDAOImpl {
                 if (connection != null) {
                     connection.close();
                 }
+
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        return addedRows != 0;
     }
 
+    @Override
     public boolean IsRegistered(User user) throws DAOException {
         final String selectSql = "SELECT * FROM users WHERE email = " + "'" + user.getEmail() + "';";
         Connection connection = null;
@@ -86,6 +89,7 @@ public class UserDAOImpl {
         return true;
     }
 
+    @Override
     public boolean checkPassword(User user) throws DAOException {
         final String checkUserPassword = "SELECT * FROM users WHERE email = " + "'" + user.getEmail() + "' and password = '" + user.getPassword() + "';";
         Connection connection = null;
@@ -119,7 +123,8 @@ public class UserDAOImpl {
         return true;
     }
 
-    public long getUsersId(User user) {
+    @Override
+    public long getUsersId(User user) throws DAOException{
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -129,7 +134,9 @@ public class UserDAOImpl {
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
             statement = connection.prepareStatement(selectSql);
             resultSet = statement.executeQuery();
-            return resultSet.getInt(1);
+            while (resultSet.next()){
+               return resultSet.getInt(1);
+            }
         } catch (SQLException | ClassNotFoundException ex) {
             throw new DAOException("Cannot get user by id", ex);
         } finally {
@@ -147,8 +154,10 @@ public class UserDAOImpl {
                 e.printStackTrace();
             }
         }
+        return -1;
     }
 
+    @Override
     public boolean deleteUser(String userId) throws DAOException {
 
         String deleteUser = "DELETE FROM users WHERE user_id = " + userId + ";";
@@ -177,6 +186,7 @@ public class UserDAOImpl {
         return removedRows != 0;
     }
 
+    @Override
     public List<User> getAllUsers() throws DAOException {
         Connection connection = null;
         PreparedStatement statement = null;
