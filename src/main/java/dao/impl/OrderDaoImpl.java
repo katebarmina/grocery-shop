@@ -70,14 +70,15 @@ public class OrderDaoImpl implements OrderDao {
     List<Order> allOrders = new ArrayList<>();
     try (Connection connection =
             DriverManager.getConnection("jdbc:mysql://localhost:3306/shop", "root", "12345");
-        PreparedStatement statement = connection.prepareStatement(SELECT_WHERE_ID_SQL);
-        ResultSet resultSet = statement.executeQuery()) {
+        PreparedStatement statement = connection.prepareStatement(SELECT_WHERE_ID_SQL)) {
       statement.setLong(1, Long.parseLong(userId));
-      while (resultSet.next()) {
-        Order order = new Order();
-        order.setOrderId(resultSet.getLong(1));
-        order.setStatus(Status.valueOf(resultSet.getString(3)));
-        allOrders.add(order);
+      try (ResultSet resultSet = statement.executeQuery()) {
+        while (resultSet.next()) {
+          Order order = new Order();
+          order.setOrderId(resultSet.getLong(1));
+          order.setStatus(Status.valueOf(resultSet.getString(3)));
+          allOrders.add(order);
+        }
       }
     } catch (SQLException ex) {
       throw new DaoException("Cannot get user's orders", ex);

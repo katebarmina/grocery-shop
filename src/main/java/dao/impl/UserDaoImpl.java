@@ -32,6 +32,11 @@ public class UserDaoImpl implements UserDao {
 
   @Override
   public void register(User user) throws DaoException {
+    try {
+      Class.forName("com.mysql.jdbc.Driver");
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+    }
     try (Connection connection =
             DriverManager.getConnection("jdbc:mysql://localhost:3306/shop", "root", "12345");
         PreparedStatement statement = connection.prepareStatement(INSERT_SQL)) {
@@ -47,19 +52,20 @@ public class UserDaoImpl implements UserDao {
 
   @Override
   public boolean IsRegistered(User user) throws DaoException {
-    try{
+    try {
       Class.forName("com.mysql.jdbc.Driver");
-    }catch (ClassNotFoundException ex){
-      ex.printStackTrace();
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
     }
     try (Connection connection =
             DriverManager.getConnection("jdbc:mysql://localhost:3306/shop", "root", "12345");
         PreparedStatement statement = connection.prepareStatement(SELECT_WHERE_EMAIL_SQL)) {
       statement.setString(1, user.getEmail());
-      try(ResultSet resultSet = statement.executeQuery()){
-      if (!resultSet.next()) {
-        return false;
-      }}
+      try (ResultSet resultSet = statement.executeQuery()) {
+        if (!resultSet.next()) {
+          return false;
+        }
+      }
     } catch (SQLException ex) {
       throw new DaoException("Cannot find user with this email", ex);
     }
@@ -71,7 +77,6 @@ public class UserDaoImpl implements UserDao {
     try (Connection connection =
             DriverManager.getConnection("jdbc:mysql://localhost:3306/shop", "root", "12345");
         PreparedStatement statement = connection.prepareStatement(SELECT_WHERE_PASSWORD_SQL)) {
-      Class.forName("com.mysql.jdbc.Driver");
       statement.setString(1, user.getEmail());
       statement.setString(2, user.getPassword());
       try (ResultSet resultSet = statement.executeQuery()) {
@@ -79,7 +84,7 @@ public class UserDaoImpl implements UserDao {
           return false;
         }
       }
-    } catch (SQLException | ClassNotFoundException ex) {
+    } catch (SQLException ex) {
       throw new DaoException("Cannot find user with this password", ex);
     }
     return true;
@@ -90,13 +95,13 @@ public class UserDaoImpl implements UserDao {
     try (Connection connection =
             DriverManager.getConnection("jdbc:mysql://localhost:3306/shop", "root", "12345");
         PreparedStatement statement = connection.prepareStatement(SELECT_USER_ID_SQL)) {
-      Class.forName("com.mysql.jdbc.Driver");
       statement.setString(1, user.getEmail());
-      try(ResultSet resultSet = statement.executeQuery()){
-      while (resultSet.next()) {
-        return resultSet.getLong(1);
-      }}
-    } catch (SQLException | ClassNotFoundException ex) {
+      try (ResultSet resultSet = statement.executeQuery()) {
+        if (resultSet.next()) {
+          return resultSet.getLong(1);
+        }
+      }
+    } catch (SQLException ex) {
       throw new DaoException("Cannot get user by id", ex);
     }
     return -1L;
@@ -107,9 +112,9 @@ public class UserDaoImpl implements UserDao {
     try (Connection connection =
             DriverManager.getConnection("jdbc:mysql://localhost:3306/shop", "root", "12345");
         PreparedStatement statement = connection.prepareStatement(DELETE_SQL)) {
-      Class.forName("com.mysql.jdbc.Driver");
-      statement.execute(DELETE_SQL);
-    } catch (SQLException | ClassNotFoundException ex) {
+      statement.setString(1, userId);
+      statement.execute();
+    } catch (SQLException ex) {
       throw new DaoException("Cannot delete user", ex);
     }
   }
@@ -121,7 +126,6 @@ public class UserDaoImpl implements UserDao {
             DriverManager.getConnection("jdbc:mysql://localhost:3306/shop", "root", "12345");
         PreparedStatement statement = connection.prepareStatement(SELECT_SQL);
         ResultSet resultSet = statement.executeQuery()) {
-      Class.forName("com.mysql.jdbc.Driver");
       while (resultSet.next()) {
         User user = new User();
         user.setId(resultSet.getLong(1));
@@ -130,7 +134,7 @@ public class UserDaoImpl implements UserDao {
         user.setRole(Role.valueOf(resultSet.getString(4)));
         allUsers.add(user);
       }
-    } catch (SQLException | ClassNotFoundException ex) {
+    } catch (SQLException ex) {
       throw new DaoException("Cannot get all users", ex);
     }
     return allUsers;
