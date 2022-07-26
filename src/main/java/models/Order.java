@@ -2,39 +2,38 @@ package models;
 
 public class Order {
 
-    private long orderId;
-    private long userId;
-    private Status status;
+  private Long orderId;
+  private Long userId;
+  private Status status;
 
-    public Order() {
-    }
+  public Order() {}
 
-    public Order(long userId, Status status) {
-        this.userId = userId;
-        this.status = status;
-    }
+  public Order(Long userId, Status status) {
+    this.userId = userId;
+    this.status = status;
+  }
 
-    public long getOrderId() {
-        return orderId;
-    }
+  public Long getOrderId() {
+    return orderId;
+  }
 
-    public void setOrderId(long orderId) {
-        this.orderId = orderId;
-    }
+  public void setOrderId(Long orderId) {
+    this.orderId = orderId;
+  }
 
-    public long getUserId() {
-        return userId;
-    }
+  public Long getUserId() {
+    return userId;
+  }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
+  public void setUserId(Long userId) {
+    this.userId = userId;
+  }
 
-    public Status getStatus() {
-        return status;
-    }
+  public Status getStatus() {
+    return status;
+  }
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
+  public void setStatus(Status status) {
+    this.status = status;
+  }
 }
