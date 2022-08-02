@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import = "models.Role"%>
+<%@ page import = "com.barmina.models.Role"%>
 <html>
 <head>
     <meta charset="UTF-8" />
