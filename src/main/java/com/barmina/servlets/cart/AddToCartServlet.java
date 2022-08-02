@@ -2,6 +2,7 @@ package com.barmina.servlets.cart;
 
 import com.barmina.models.Product;
 import com.barmina.models.ShoppingCart;
+import com.barmina.models.User;
 import com.barmina.service.ProductService;
 import com.barmina.service.ShoppingCartService;
 
@@ -22,15 +23,11 @@ public class AddToCartServlet extends HttpServlet {
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
     HttpSession session = req.getSession();
-    ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
-    if (cart == null) {
-      cart = new ShoppingCart();
-      session.setAttribute("cart", cart);
-    }
+    User user = (User) session.getAttribute("user");
+    ShoppingCart cart = cartService.getCartById(String.valueOf(user.getId()));
     String productID = req.getParameter("productId");
     Product product = productService.getById(productID);
-    cart = cartService.add(cart, product);
-    session.setAttribute("cart", cart);
+    cartService.add(cart, product);
     resp.sendRedirect(req.getContextPath() + "/listOfProducts");
   }
 }

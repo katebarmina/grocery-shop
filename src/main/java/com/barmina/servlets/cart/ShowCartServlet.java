@@ -2,6 +2,8 @@ package com.barmina.servlets.cart;
 
 import com.barmina.models.Item;
 import com.barmina.models.ShoppingCart;
+import com.barmina.models.User;
+import com.barmina.service.ShoppingCartService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,16 +16,15 @@ import java.util.List;
 
 @WebServlet("/shoppingCart")
 public class ShowCartServlet extends HttpServlet {
+  private final ShoppingCartService cartService = new ShoppingCartService();
+
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     response.setContentType("text/html");
     HttpSession session = request.getSession();
-    ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
-    if (cart == null) {
-      cart = new ShoppingCart();
-      session.setAttribute("cart", cart);
-    }
+    User user = (User) session.getAttribute("user");
+    ShoppingCart cart = cartService.getCartById(String.valueOf(user.getId()));
     List<Item> products = cart.getProducts();
     request.setAttribute("products", products);
     request
