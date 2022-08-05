@@ -1,6 +1,5 @@
 package com.barmina.servlets;
 
-import com.barmina.models.Role;
 import com.barmina.models.User;
 import com.barmina.service.UserService;
 
@@ -32,16 +31,13 @@ public class LoginServlet extends HttpServlet {
     User newUser = new User();
     newUser.setEmail(username);
     newUser.setPassword(password);
-    if (userService.isRegistered(newUser) & userService.passwordIsCorrect(newUser)) {
-      newUser.setId(userService.getId(newUser));
-      if (userService.isAdmin(newUser)) {
-        newUser.setRole(Role.ADMIN);
-      } else {
-        newUser.setRole(Role.CLIENT);
+    if (userService.isRegistered(newUser)) {
+      newUser = userService.getUser(newUser);
+      if (userService.passwordIsCorrect(newUser)) {
+        HttpSession session = request.getSession();
+        session.setAttribute("user", newUser);
+        request.getRequestDispatcher("/index.jsp").forward(request, response);
       }
-      HttpSession session = request.getSession();
-      session.setAttribute("user", newUser);
-      request.getRequestDispatcher("/index.jsp").forward(request, response);
     } else {
       int incorrectLog = 1;
       request.setAttribute("incorrectLog", incorrectLog);

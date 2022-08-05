@@ -22,6 +22,7 @@
             <th>Email</th>
             <th>Role</th>
             <th></th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -31,6 +32,16 @@
                 <td><c:out value="${user.email}"/></td>
                 <td><c:out value="${user.role}"/></td>
                 <td><a href="${pageContext.request.contextPath}/manageShop/deleteUser?userId=${user.id}">Delete</a></td>
+                <td>
+                    <form method="post" action="/updateRole?userId=${user.id}">
+                        <select id="role" name="role">
+                            <option value="ROLE" disabled selected>ROLE</option>
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="CLIENT">CLIENT</option>
+                        </select>
+                        <button type="submit">SAVE CHANGES</button>
+                    </form>
+                </td>
             </tr>
         </c:forEach>
 

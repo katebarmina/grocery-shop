@@ -15,24 +15,18 @@ import java.util.List;
 
 public class UserDaoImpl implements UserDao {
   private static final String INSERT_SQL =
-      "INSERT INTO users (email,password,user_role) VALUES (?,?,?);";
+      "INSERT INTO users (email,password,user_role,salt) VALUES (?,?,?,?);";
   private static final String SELECT_WHERE_EMAIL_SQL = "SELECT * FROM users WHERE email = ?;";
 
   private static final String SELECT_WHERE_PASSWORD_SQL =
       "SELECT * FROM users WHERE email = ? and password = ?;";
 
-  private static final String SELECT_USER_ID_SQL = "SELECT user_id FROM users where email = ?;";
+  private static final String SELECT_USER_SQL =
+      "SELECT user_id,user_role,salt FROM users where email = ?;";
 
   private static final String DELETE_SQL = "DELETE FROM users WHERE user_id = ?;";
 
   private static final String SELECT_SQL = "SELECT * FROM users;";
-
-  @Override
-  public boolean isAdmin(User user) {
-    String ADMIN_EMAIL = "admin@gmail.com";
-    String ADMIN_PASSWORD = "12345";
-    return user.getEmail().equals(ADMIN_EMAIL) && user.getPassword().equals(ADMIN_PASSWORD);
-  }
 
   @Override
   public void register(User user) throws DaoException {
@@ -40,6 +34,7 @@ public class UserDaoImpl implements UserDao {
       statement.setString(1, user.getEmail());
       statement.setString(2, user.getPassword());
       statement.setString(3, String.valueOf(user.getRole()));
+      statement.setBytes(4, user.getSalt());
       statement.execute();
     } catch (SQLException ex) {
       throw new DaoException("Cannot register user", ex);
@@ -47,7 +42,7 @@ public class UserDaoImpl implements UserDao {
   }
 
   @Override
-  public boolean IsRegistered(User user) throws DaoException {
+  public boolean isRegistered(User user) throws DaoException {
     try (PreparedStatement statement = createStatement(SELECT_WHERE_EMAIL_SQL)) {
       statement.setString(1, user.getEmail());
       try (ResultSet resultSet = statement.executeQuery()) {
@@ -78,18 +73,20 @@ public class UserDaoImpl implements UserDao {
   }
 
   @Override
-  public Long getId(User user) throws DaoException {
-    try (PreparedStatement statement = createStatement(SELECT_USER_ID_SQL)) {
+  public User getUser(User user) throws DaoException {
+    try (PreparedStatement statement = createStatement(SELECT_USER_SQL)) {
       statement.setString(1, user.getEmail());
       try (ResultSet resultSet = statement.executeQuery()) {
-        if (resultSet.next()) {
-          return resultSet.getLong(1);
+        while (resultSet.next()) {
+          user.setId(resultSet.getLong(1));
+          user.setRole(Role.valueOf(resultSet.getString(2)));
+          user.setSalt(resultSet.getBytes(3));
         }
       }
     } catch (SQLException ex) {
-      throw new DaoException("Cannot get user by id", ex);
+      throw new DaoException("Cannot get user", ex);
     }
-    return -1L;
+    return user;
   }
 
   @Override
@@ -119,6 +116,18 @@ public class UserDaoImpl implements UserDao {
       throw new DaoException("Cannot get all users", ex);
     }
     return allUsers;
+  }
+
+  @Override
+  public void updateRole(String userId, Role role) throws DaoException {
+    try (PreparedStatement statement =
+        createStatement("UPDATE users SET user_role = ? WHERE user_id = ?")) {
+      statement.setString(2, userId);
+      statement.setString(1, String.valueOf(role));
+      statement.execute();
+    } catch (SQLException ex) {
+      throw new DaoException("Cannot get all users", ex);
+    }
   }
 
   private PreparedStatement createStatement(String SQL) throws SQLException {

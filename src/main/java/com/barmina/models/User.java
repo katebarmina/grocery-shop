@@ -10,12 +10,22 @@ public class User {
 
   private Role role;
 
+  private byte[] salt;
+
   public User() {}
 
   public User(String email, String password, Role role) {
     this.email = email;
     this.password = password;
     this.role = role;
+  }
+
+  public byte[] getSalt() {
+    return salt;
+  }
+
+  public void setSalt(byte[] salt) {
+    this.salt = salt;
   }
 
   public Role getRole() {

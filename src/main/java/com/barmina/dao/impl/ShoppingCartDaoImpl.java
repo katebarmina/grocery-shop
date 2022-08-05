@@ -16,7 +16,6 @@ import java.util.List;
 
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
-  private final String SELECT_CARTS_SQL = "SELECT * from shopping_cart";
   private final String INSERT_ITEM_SQL =
       "INSERT INTO cart_item (cart_id,product_id,quantity) VALUES(?,?,1);";
   private final String DELETE_ITEM_SQL =

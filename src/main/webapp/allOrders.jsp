@@ -33,6 +33,7 @@
                 <td><a href="${pageContext.request.contextPath}/deleteOrder?orderId=${order.orderId}">Delete</a></td>
                 <td><form method="post" action="/updateStatus?orderId=${order.orderId}">
                     <select id="orderStatus" name="orderStatus">
+                        <option value="STATUS" disabled selected>STATUS</option>
                         <option value="PAYMENT_RECEIVED">PAYMENT_RECEIVED</option>
                         <option value="PAYMENT_FAILED">PAYMENT_FAILED</option>
                         <option value="PROCESSING">PROCESSING</option>
@@ -41,7 +42,8 @@
                         <option value="CANCELED">CANCELED</option>
                     </select>
                     <button type="submit">SAVE CHANGES</button>
-                </form></td>
+                </form>
+                </td>
 
             </tr>
 

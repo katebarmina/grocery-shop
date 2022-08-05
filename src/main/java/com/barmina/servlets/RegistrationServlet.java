@@ -36,7 +36,7 @@ public class RegistrationServlet extends HttpServlet {
 
     User user = new User(email, password, Role.CLIENT);
     userService.register(user);
-    user.setId(userService.getId(user));
+    userService.getUser(user);
     session.setAttribute("user", user);
     response.sendRedirect(request.getContextPath() + "/index.jsp");
   }
