@@ -1,6 +1,6 @@
 package com.barmina.servlets.order;
 
-import com.barmina.service.OrderService;
+import com.barmina.services.OrderService;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

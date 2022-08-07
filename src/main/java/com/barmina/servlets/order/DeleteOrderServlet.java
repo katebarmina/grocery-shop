@@ -1,6 +1,6 @@
 package com.barmina.servlets.order;
 
-import com.barmina.service.OrderService;
+import com.barmina.services.OrderService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +16,7 @@ public class DeleteOrderServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    String orderId = request.getParameter("orderId");
+    Long orderId = Long.valueOf(request.getParameter("orderId"));
     orderService.delete(orderId);
     response.sendRedirect(request.getContextPath() + "/listOfOrders");
   }

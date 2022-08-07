@@ -3,8 +3,8 @@ package com.barmina.servlets.cart;
 import com.barmina.models.Product;
 import com.barmina.models.ShoppingCart;
 import com.barmina.models.User;
-import com.barmina.service.ProductService;
-import com.barmina.service.ShoppingCartService;
+import com.barmina.services.ProductService;
+import com.barmina.services.ShoppingCartService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,8 +25,8 @@ public class AddToCartServlet extends HttpServlet {
     HttpSession session = req.getSession();
     User user = (User) session.getAttribute("user");
     if (user != null) {
-      ShoppingCart cart = cartService.getCartById(String.valueOf(user.getId()));
-      String productID = req.getParameter("productId");
+      ShoppingCart cart = cartService.getCartById(user.getId());
+      Long productID = Long.valueOf(req.getParameter("productId"));
       Product product = productService.getById(productID);
       cartService.add(cart, product);
       resp.sendRedirect(req.getContextPath() + "/listOfProducts");

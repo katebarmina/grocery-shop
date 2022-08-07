@@ -1,7 +1,7 @@
-package com.barmina.service;
+package com.barmina.services;
 
-import com.barmina.dao.OrderDao;
-import com.barmina.dao.impl.OrderDaoImpl;
+import com.barmina.daos.OrderDao;
+import com.barmina.daos.impl.OrderDaoImpl;
 import com.barmina.models.Order;
 
 import java.util.List;
@@ -21,11 +21,11 @@ public class OrderService {
     return dao.getAll();
   }
 
-  public List<Order> getAllById(String userId) {
+  public List<Order> getAllById(Long userId) {
     return dao.getAllById(userId);
   }
 
-  public void delete(String orderId) {
+  public void delete(Long orderId) {
     dao.deleteById(orderId);
   }
 }

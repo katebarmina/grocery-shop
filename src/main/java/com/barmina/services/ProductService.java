@@ -1,7 +1,7 @@
-package com.barmina.service;
+package com.barmina.services;
 
-import com.barmina.dao.ProductDao;
-import com.barmina.dao.impl.ProductsDaoImpl;
+import com.barmina.daos.ProductDao;
+import com.barmina.daos.impl.ProductsDaoImpl;
 import com.barmina.models.Product;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public class ProductService {
     return dao.getAll();
   }
 
-  public Product getById(String id) {
+  public Product getById(Long id) {
     return dao.getById(id);
   }
 
@@ -22,11 +22,11 @@ public class ProductService {
     dao.add(product);
   }
 
-  public void update(Product product, String id) {
+  public void update(Product product, Long id) {
     dao.update(product, id);
   }
 
-  public void delete(String id) {
+  public void delete(Long id) {
     dao.delete(id);
   }
 }

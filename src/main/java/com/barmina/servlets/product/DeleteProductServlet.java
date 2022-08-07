@@ -1,6 +1,6 @@
 package com.barmina.servlets.product;
 
-import com.barmina.service.ProductService;
+import com.barmina.services.ProductService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +16,7 @@ public class DeleteProductServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    String productId = request.getParameter("productId");
+    Long productId = Long.valueOf(request.getParameter("productId"));
     productService.delete(productId);
     response.sendRedirect(request.getContextPath() + "/listOfProducts");
   }

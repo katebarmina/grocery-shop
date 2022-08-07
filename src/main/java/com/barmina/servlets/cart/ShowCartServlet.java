@@ -3,7 +3,7 @@ package com.barmina.servlets.cart;
 import com.barmina.models.Item;
 import com.barmina.models.ShoppingCart;
 import com.barmina.models.User;
-import com.barmina.service.ShoppingCartService;
+import com.barmina.services.ShoppingCartService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +24,7 @@ public class ShowCartServlet extends HttpServlet {
     response.setContentType("text/html");
     HttpSession session = request.getSession();
     User user = (User) session.getAttribute("user");
-    ShoppingCart cart = cartService.getCartById(String.valueOf(user.getId()));
+    ShoppingCart cart = cartService.getCartById(user.getId());
     List<Item> products = cart.getProducts();
     request.setAttribute("products", products);
     request

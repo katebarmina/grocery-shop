@@ -1,7 +1,7 @@
 package com.barmina.servlets.order;
 
 import com.barmina.models.Order;
-import com.barmina.service.OrderService;
+import com.barmina.services.OrderService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

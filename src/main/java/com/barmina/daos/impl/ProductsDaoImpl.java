@@ -1,8 +1,7 @@
-package com.barmina.dao.impl;
+package com.barmina.daos.impl;
 
-import com.barmina.dao.DaoException;
-import com.barmina.dao.ProductDao;
-import com.barmina.db.DataSource;
+import com.barmina.daos.DaoException;
+import com.barmina.daos.ProductDao;
 import com.barmina.models.Product;
 
 import java.sql.Connection;
@@ -46,10 +45,10 @@ public class ProductsDaoImpl implements ProductDao {
   }
 
   @Override
-  public Product getById(String productId) throws DaoException {
+  public Product getById(Long productId) throws DaoException {
     Product product = new Product();
     try (PreparedStatement statement = createStatement(SELECT_WHERE_ID_SQL)) {
-      statement.setString(1, productId);
+      statement.setLong(1, productId);
       try (ResultSet resultSet = statement.executeQuery()) {
         while (resultSet.next()) {
           product.setId(resultSet.getLong(1));
@@ -80,13 +79,13 @@ public class ProductsDaoImpl implements ProductDao {
   }
 
   @Override
-  public void update(Product product, String productId) throws DaoException {
+  public void update(Product product, Long productId) throws DaoException {
     try (PreparedStatement statement = createStatement(UPDATE_SQL)) {
       statement.setString(1, product.getName());
       statement.setDouble(2, product.getPrice());
       statement.setString(3, product.getBrand());
       statement.setLong(4, product.getCategoryId());
-      statement.setString(5, productId);
+      statement.setLong(5, productId);
       statement.execute();
     } catch (SQLException ex) {
       throw new DaoException("Cannot update product", ex);
@@ -94,9 +93,9 @@ public class ProductsDaoImpl implements ProductDao {
   }
 
   @Override
-  public void delete(String productId) throws DaoException {
+  public void delete(Long productId) throws DaoException {
     try (PreparedStatement statement = createStatement(DELETE_SQL)) {
-      statement.setString(1, productId);
+      statement.setLong(1, productId);
       statement.execute();
     } catch (SQLException ex) {
       throw new DaoException("Cannot delete product", ex);

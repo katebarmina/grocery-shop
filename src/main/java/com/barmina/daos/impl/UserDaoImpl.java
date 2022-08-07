@@ -1,8 +1,7 @@
-package com.barmina.dao.impl;
+package com.barmina.daos.impl;
 
-import com.barmina.dao.DaoException;
-import com.barmina.dao.UserDao;
-import com.barmina.db.DataSource;
+import com.barmina.daos.DaoException;
+import com.barmina.daos.UserDao;
 import com.barmina.models.Role;
 import com.barmina.models.User;
 
@@ -29,7 +28,7 @@ public class UserDaoImpl implements UserDao {
   private static final String SELECT_SQL = "SELECT * FROM users;";
 
   @Override
-  public void register(User user) throws DaoException {
+  public void insertUser(User user) throws DaoException {
     try (PreparedStatement statement = createStatement(INSERT_SQL)) {
       statement.setString(1, user.getEmail());
       statement.setString(2, user.getPassword());
@@ -42,7 +41,7 @@ public class UserDaoImpl implements UserDao {
   }
 
   @Override
-  public boolean isRegistered(User user) throws DaoException {
+  public boolean selectByEmail(User user) throws DaoException {
     try (PreparedStatement statement = createStatement(SELECT_WHERE_EMAIL_SQL)) {
       statement.setString(1, user.getEmail());
       try (ResultSet resultSet = statement.executeQuery()) {
@@ -90,9 +89,9 @@ public class UserDaoImpl implements UserDao {
   }
 
   @Override
-  public void delete(String userId) throws DaoException {
+  public void delete(Long userId) throws DaoException {
     try (PreparedStatement statement = createStatement(DELETE_SQL)) {
-      statement.setString(1, userId);
+      statement.setLong(1, userId);
       statement.execute();
     } catch (SQLException ex) {
       throw new DaoException("Cannot delete user", ex);
@@ -119,10 +118,10 @@ public class UserDaoImpl implements UserDao {
   }
 
   @Override
-  public void updateRole(String userId, Role role) throws DaoException {
+  public void updateRole(Long userId, Role role) throws DaoException {
     try (PreparedStatement statement =
         createStatement("UPDATE users SET user_role = ? WHERE user_id = ?")) {
-      statement.setString(2, userId);
+      statement.setLong(2, userId);
       statement.setString(1, String.valueOf(role));
       statement.execute();
     } catch (SQLException ex) {

@@ -1,7 +1,7 @@
 package com.barmina.servlets.product;
 
 import com.barmina.models.Product;
-import com.barmina.service.ProductService;
+import com.barmina.services.ProductService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

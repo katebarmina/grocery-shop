@@ -1,7 +1,7 @@
-package com.barmina.service;
+package com.barmina.services;
 
-import com.barmina.dao.UserDao;
-import com.barmina.dao.impl.UserDaoImpl;
+import com.barmina.daos.UserDao;
+import com.barmina.daos.impl.UserDaoImpl;
 import com.barmina.models.Role;
 import com.barmina.models.User;
 
@@ -12,7 +12,7 @@ public class UserService {
   private final PasswordHasher hasher = new PasswordHasher();
   private final UserDao dao = new UserDaoImpl();
 
-  public void delete(String userId) {
+  public void delete(Long userId) {
     dao.delete(userId);
   }
 
@@ -29,11 +29,11 @@ public class UserService {
     byte[] salt = hasher.getSalt();
     user.setPassword(hasher.hashPassword(user.getPassword(), salt));
     user.setSalt(salt);
-    dao.register(user);
+    dao.insertUser(user);
   }
 
   public boolean isRegistered(User user) {
-    return dao.isRegistered(user);
+    return dao.selectByEmail(user);
   }
 
   public boolean passwordIsCorrect(User user) {
@@ -42,7 +42,7 @@ public class UserService {
     return dao.checkPassword(user);
   }
 
-  public void updateRole(String userId, Role role) {
+  public void updateRole(Long userId, Role role) {
     dao.updateRole(userId, role);
   }
 }

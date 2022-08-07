@@ -1,4 +1,4 @@
-package com.barmina.dao;
+package com.barmina.daos;
 
 import com.barmina.models.Role;
 import com.barmina.models.User;
@@ -7,17 +7,17 @@ import java.util.List;
 
 public interface UserDao {
 
-  void register(User user) throws DaoException;
+  void insertUser(User user) throws DaoException;
 
-  boolean isRegistered(User user) throws DaoException;
+  boolean selectByEmail(User user) throws DaoException;
 
   boolean checkPassword(User user) throws DaoException;
 
   User getUser(User user);
 
-  void delete(String userId) throws DaoException;
+  void delete(Long userId) throws DaoException;
 
   List<User> getAll() throws DaoException;
 
-  void updateRole(String userId, Role role) throws DaoException;
+  void updateRole(Long userId, Role role) throws DaoException;
 }

@@ -1,8 +1,7 @@
-package com.barmina.dao.impl;
+package com.barmina.daos.impl;
 
-import com.barmina.dao.DaoException;
-import com.barmina.dao.OrderDao;
-import com.barmina.db.DataSource;
+import com.barmina.daos.DaoException;
+import com.barmina.daos.OrderDao;
 import com.barmina.models.Order;
 import com.barmina.models.Status;
 
@@ -21,7 +20,7 @@ public class OrderDaoImpl implements OrderDao {
 
   private static final String SELECT_SQL = "SELECT * from orders;";
 
-  private static final String SELECT_WHERE_ID_SQL = "SELECT * from orders WHERE user_id = ?;";
+  private static final String SELECT_BY_ID_SQL = "SELECT * from orders WHERE user_id = ?;";
 
   private static final String DELETE_SQL = "DELETE from orders where order_id = ?;";
 
@@ -66,10 +65,10 @@ public class OrderDaoImpl implements OrderDao {
   }
 
   @Override
-  public List<Order> getAllById(String userId) throws DaoException {
+  public List<Order> getAllById(Long userId) throws DaoException {
     List<Order> allOrders = new ArrayList<>();
-    try (PreparedStatement statement = createStatement(SELECT_WHERE_ID_SQL)) {
-      statement.setLong(1, Long.parseLong(userId));
+    try (PreparedStatement statement = createStatement(SELECT_BY_ID_SQL)) {
+      statement.setLong(1, userId);
       try (ResultSet resultSet = statement.executeQuery()) {
         while (resultSet.next()) {
           Order order = new Order();
@@ -85,9 +84,9 @@ public class OrderDaoImpl implements OrderDao {
   }
 
   @Override
-  public void deleteById(String orderId) throws DaoException {
+  public void deleteById(Long orderId) throws DaoException {
     try (PreparedStatement statement = createStatement(DELETE_SQL)) {
-      statement.setLong(1, Long.parseLong(orderId));
+      statement.setLong(1,orderId);
       statement.execute();
     } catch (SQLException ex) {
       throw new DaoException("Cannot delete order", ex);

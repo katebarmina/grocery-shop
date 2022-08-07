@@ -1,6 +1,6 @@
 package com.barmina.servlets.user;
 
-import com.barmina.service.UserService;
+import com.barmina.services.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +16,7 @@ public class DeleteUserServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    String userId = request.getParameter("userId");
+    Long userId = Long.valueOf(request.getParameter("userId"));
     userService.delete(userId);
     response.sendRedirect(request.getContextPath() + "/showAllUsers");
   }

@@ -1,8 +1,7 @@
-package com.barmina.dao.impl;
+package com.barmina.daos.impl;
 
-import com.barmina.dao.DaoException;
-import com.barmina.dao.ShoppingCartDao;
-import com.barmina.db.DataSource;
+import com.barmina.daos.DaoException;
+import com.barmina.daos.ShoppingCartDao;
 import com.barmina.models.Item;
 import com.barmina.models.Product;
 import com.barmina.models.ShoppingCart;
@@ -29,19 +28,19 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
       "UPDATE cart_item set quantity = ? where product_id = ? and cart_id = ?;";
   private final String INSERT_CART_SQL = "INSERT INTO shopping_cart (user_id) VALUES (?);";
 
-  public void createCart(String userId) throws DaoException {
+  public void createCart(Long userId) throws DaoException {
     try (PreparedStatement statement = createStatement(INSERT_CART_SQL)) {
-      statement.setString(1, userId);
+      statement.setLong(1, userId);
       statement.execute();
     } catch (SQLException ex) {
       throw new DaoException("Couldn't create cart", ex);
     }
   }
 
-  public ShoppingCart getCartByUserId(String userId) {
+  public ShoppingCart getCartByUserId(Long userId) {
     ShoppingCart shoppingCart = new ShoppingCart();
     try (PreparedStatement statement = createStatement(SELECT_CART_BY_USER_ID)) {
-      statement.setString(1, userId);
+      statement.setLong(1, userId);
       try (ResultSet rs = statement.executeQuery()) {
         while (rs.next()) {
           shoppingCart.setCartId(rs.getLong(1));
@@ -76,10 +75,10 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
   }
 
   @Override
-  public List<Item> getAllItems(String cartId) throws DaoException {
+  public List<Item> getAllItems(Long cartId) throws DaoException {
     List<Item> items = new ArrayList<>();
     try (PreparedStatement statement = createStatement(SELECT_ALL_ITEMS_SQL)) {
-      statement.setString(1, cartId);
+      statement.setLong(1, cartId);
       try (ResultSet rs = statement.executeQuery()) {
         while (rs.next()) {
           Product product = new Product();

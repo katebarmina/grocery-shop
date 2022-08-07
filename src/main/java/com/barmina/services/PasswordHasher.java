@@ -1,4 +1,4 @@
-package com.barmina.service;
+package com.barmina.services;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

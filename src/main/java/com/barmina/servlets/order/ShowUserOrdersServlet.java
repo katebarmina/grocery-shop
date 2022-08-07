@@ -2,7 +2,7 @@ package com.barmina.servlets.order;
 
 import com.barmina.models.Order;
 import com.barmina.models.User;
-import com.barmina.service.OrderService;
+import com.barmina.services.OrderService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,7 +23,7 @@ public class ShowUserOrdersServlet extends HttpServlet {
       throws ServletException, IOException {
     HttpSession session = request.getSession();
     User user = (User) session.getAttribute("user");
-    List<Order> userOrders = orderService.getAllById(String.valueOf(user.getId()));
+    List<Order> userOrders = orderService.getAllById(user.getId());
     request.setAttribute("userOrders", userOrders);
     request.getRequestDispatcher("/showUserOrders.jsp").forward(request, response);
   }

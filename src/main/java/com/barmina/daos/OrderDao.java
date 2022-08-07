@@ -1,4 +1,4 @@
-package com.barmina.dao;
+package com.barmina.daos;
 
 import com.barmina.models.Order;
 
@@ -11,7 +11,7 @@ public interface OrderDao {
 
   List<Order> getAll();
 
-  List<Order> getAllById(String userId);
+  List<Order> getAllById(Long userId);
 
-  void deleteById(String orderId);
+  void deleteById(Long orderId);
 }

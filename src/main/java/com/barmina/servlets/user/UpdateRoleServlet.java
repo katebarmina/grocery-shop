@@ -1,7 +1,7 @@
 package com.barmina.servlets.user;
 
 import com.barmina.models.Role;
-import com.barmina.service.UserService;
+import com.barmina.services.UserService;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,7 +16,7 @@ public class UpdateRoleServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
-    String userId = request.getParameter("userId");
+    Long userId = Long.valueOf(request.getParameter("userId"));
     String role = request.getParameter("role");
     service.updateRole(userId, Role.valueOf(role));
     response.sendRedirect(request.getContextPath() + "/showAllUsers");

@@ -1,7 +1,7 @@
 package com.barmina.servlets;
 
 import com.barmina.models.User;
-import com.barmina.service.UserService;
+import com.barmina.services.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

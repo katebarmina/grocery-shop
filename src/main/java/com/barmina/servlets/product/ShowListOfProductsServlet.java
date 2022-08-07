@@ -3,7 +3,7 @@ package com.barmina.servlets.product;
 import com.barmina.models.Product;
 import com.barmina.models.Role;
 import com.barmina.models.User;
-import com.barmina.service.ProductService;
+import com.barmina.services.ProductService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

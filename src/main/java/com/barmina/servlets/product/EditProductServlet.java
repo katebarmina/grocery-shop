@@ -1,7 +1,7 @@
 package com.barmina.servlets.product;
 
 import com.barmina.models.Product;
-import com.barmina.service.ProductService;
+import com.barmina.services.ProductService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,7 +27,7 @@ public class EditProductServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
-    String productId = request.getParameter("productId");
+    Long productId = Long.valueOf(request.getParameter("productId"));
     String name = request.getParameter("productName");
     double price = Double.parseDouble(request.getParameter("price"));
     String brand = request.getParameter("brand");
