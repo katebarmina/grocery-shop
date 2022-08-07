@@ -24,10 +24,14 @@ public class AddToCartServlet extends HttpServlet {
       throws ServletException, IOException {
     HttpSession session = req.getSession();
     User user = (User) session.getAttribute("user");
-    ShoppingCart cart = cartService.getCartById(String.valueOf(user.getId()));
-    String productID = req.getParameter("productId");
-    Product product = productService.getById(productID);
-    cartService.add(cart, product);
-    resp.sendRedirect(req.getContextPath() + "/listOfProducts");
+    if (user != null) {
+      ShoppingCart cart = cartService.getCartById(String.valueOf(user.getId()));
+      String productID = req.getParameter("productId");
+      Product product = productService.getById(productID);
+      cartService.add(cart, product);
+      resp.sendRedirect(req.getContextPath() + "/listOfProducts");
+    } else {
+      resp.sendRedirect(req.getContextPath() + "/login");
+    }
   }
 }
