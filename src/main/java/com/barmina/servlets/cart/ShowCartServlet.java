@@ -1,7 +1,6 @@
 package com.barmina.servlets.cart;
 
 import com.barmina.models.Item;
-import com.barmina.models.ShoppingCart;
 import com.barmina.models.User;
 import com.barmina.services.ShoppingCartService;
 
@@ -24,8 +23,7 @@ public class ShowCartServlet extends HttpServlet {
     response.setContentType("text/html");
     HttpSession session = request.getSession();
     User user = (User) session.getAttribute("user");
-    ShoppingCart cart = cartService.getCartById(user.getId());
-    List<Item> products = cart.getProducts();
+    List<Item> products = cartService.getItems(user.getId());
     request.setAttribute("products", products);
     request
         .getRequestDispatcher(request.getContextPath() + "/showCart.jsp")

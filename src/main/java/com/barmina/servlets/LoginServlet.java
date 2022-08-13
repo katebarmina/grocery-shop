@@ -26,18 +26,13 @@ public class LoginServlet extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     response.setContentType("text/html");
-    String username = request.getParameter("email");
+    String email = request.getParameter("email");
     String password = request.getParameter("password");
-    User newUser = new User();
-    newUser.setEmail(username);
-    newUser.setPassword(password);
-    if (userService.isRegistered(newUser)) {
-      newUser = userService.getUser(newUser);
-      if (userService.passwordIsCorrect(newUser)) {
+    if (userService.isRegistered(email) && userService.isPasswordCorrect(password, email)) {
+      User newUser = userService.login(email);
         HttpSession session = request.getSession();
         session.setAttribute("user", newUser);
         request.getRequestDispatcher("/index.jsp").forward(request, response);
-      }
     } else {
       int incorrectLog = 1;
       request.setAttribute("incorrectLog", incorrectLog);

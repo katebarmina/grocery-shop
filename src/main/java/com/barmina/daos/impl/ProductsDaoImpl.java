@@ -12,22 +12,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductsDaoImpl implements ProductDao {
-  private static final String SELECT_SQL =
-      "SELECT product_id,product_name,price,brand,image FROM products ;";
-  private static final String SELECT_WHERE_ID_SQL = "SELECT * FROM products where product_id = ?;";
-
+  private static final String SELECT_SQL = "SELECT * FROM products ;";
+  private static final String SELECT_BY_ID_SQL = "SELECT * FROM products WHERE id = ?;";
   private static final String INSERT_SQL =
-      "INSERT INTO products (product_name,price,brand,category_id) VALUES (?,?,?,?);";
-
+      "INSERT INTO products (name,price,brand,category_id) VALUES (?,?,?,?);";
   private static final String UPDATE_SQL =
-      "UPDATE products SET product_name = ?,price = ?,brand = ?,category_id = ? WHERE product_id = ?;";
-
-  private static final String DELETE_SQL = "DELETE FROM products WHERE product_id = ? ;";
+      "UPDATE products SET name = ?,price = ?,brand = ?,category_id = ? WHERE id = ?;";
+  private static final String DELETE_SQL = "DELETE FROM products WHERE id = ? ;";
 
   @Override
   public List<Product> getAll() throws DaoException {
     List<Product> listOfProducts = new ArrayList<>();
-    try (PreparedStatement statement = createStatement(SELECT_SQL);
+    try (Connection connection = DataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(SELECT_SQL);
         ResultSet resultSet = statement.executeQuery()) {
       while (resultSet.next()) {
         Product product = new Product();
@@ -47,7 +44,8 @@ public class ProductsDaoImpl implements ProductDao {
   @Override
   public Product getById(Long productId) throws DaoException {
     Product product = new Product();
-    try (PreparedStatement statement = createStatement(SELECT_WHERE_ID_SQL)) {
+    try (Connection connection = DataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID_SQL)) {
       statement.setLong(1, productId);
       try (ResultSet resultSet = statement.executeQuery()) {
         while (resultSet.next()) {
@@ -67,7 +65,8 @@ public class ProductsDaoImpl implements ProductDao {
 
   @Override
   public void add(Product product) throws DaoException {
-    try (PreparedStatement statement = createStatement(INSERT_SQL)) {
+    try (Connection connection = DataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(INSERT_SQL)) {
       statement.setString(1, product.getName());
       statement.setDouble(2, product.getPrice());
       statement.setString(3, product.getBrand());
@@ -80,7 +79,8 @@ public class ProductsDaoImpl implements ProductDao {
 
   @Override
   public void update(Product product, Long productId) throws DaoException {
-    try (PreparedStatement statement = createStatement(UPDATE_SQL)) {
+    try (Connection connection = DataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(UPDATE_SQL)) {
       statement.setString(1, product.getName());
       statement.setDouble(2, product.getPrice());
       statement.setString(3, product.getBrand());
@@ -94,7 +94,8 @@ public class ProductsDaoImpl implements ProductDao {
 
   @Override
   public void delete(Long productId) throws DaoException {
-    try (PreparedStatement statement = createStatement(DELETE_SQL)) {
+    try (Connection connection = DataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(DELETE_SQL)) {
       statement.setLong(1, productId);
       statement.execute();
     } catch (SQLException ex) {
@@ -102,8 +103,4 @@ public class ProductsDaoImpl implements ProductDao {
     }
   }
 
-  private PreparedStatement createStatement(String SQL) throws SQLException {
-    Connection connection = DataSource.getConnection();
-    return connection.prepareStatement(SQL);
-  }
 }

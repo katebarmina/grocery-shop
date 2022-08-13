@@ -20,23 +20,27 @@ public class UserService {
     return dao.getAll();
   }
 
-  public User getUser(User user) {
-    return dao.getUser(user);
-  }
-
-
-  public void register(User user) {
+  public void register(String email, String password) {
+    User user = new User();
     byte[] salt = hasher.getSalt();
-    user.setPassword(hasher.hashPassword(user.getPassword(), salt));
+    user.setEmail(email);
+    user.setRole(Role.CLIENT);
+    user.setPassword(hasher.hashPassword(password, salt));
     user.setSalt(salt);
     dao.insertUser(user);
   }
 
-  public boolean isRegistered(User user) {
-    return dao.selectByEmail(user);
+  public boolean isRegistered(String email) {
+    return dao.getByEmail(email).isPresent();
   }
 
-  public boolean passwordIsCorrect(User user) {
+  public User login(String email) {
+    return dao.getByEmail(email).get();
+  }
+
+  public boolean isPasswordCorrect(String password, String email) {
+    User user = dao.getByEmail(email).get();
+    user.setPassword(password);
     byte[] salt = user.getSalt();
     user.setPassword(hasher.hashPassword(user.getPassword(), salt));
     return dao.checkPassword(user);

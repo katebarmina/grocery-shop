@@ -1,7 +1,5 @@
 package com.barmina.servlets;
 
-import com.barmina.models.Order;
-import com.barmina.models.Status;
 import com.barmina.models.User;
 import com.barmina.services.OrderService;
 
@@ -34,8 +32,7 @@ public class OrderServlet extends HttpServlet {
 
     HttpSession session = request.getSession();
     User user = (User) session.getAttribute("user");
-    Order order = new Order(user.getId(), Status.PROCESSING);
-    orderService.create(order);
+    orderService.create(user.getId());
     response.sendRedirect(request.getContextPath() + "/orderCompleted.jsp");
   }
 }

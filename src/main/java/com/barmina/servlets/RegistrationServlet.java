@@ -1,6 +1,5 @@
 package com.barmina.servlets;
 
-import com.barmina.models.Role;
 import com.barmina.models.User;
 import com.barmina.services.UserService;
 
@@ -29,14 +28,11 @@ public class RegistrationServlet extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
     response.setContentType("text/html");
-
     HttpSession session = request.getSession();
     String email = request.getParameter("email");
     String password = request.getParameter("password");
-
-    User user = new User(email, password, Role.CLIENT);
-    userService.register(user);
-    userService.getUser(user);
+    userService.register(email, password);
+    User user = userService.login(email);
     session.setAttribute("user", user);
     response.sendRedirect(request.getContextPath() + "/index.jsp");
   }

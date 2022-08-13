@@ -1,9 +1,6 @@
 package com.barmina.servlets.cart;
 
-import com.barmina.models.Product;
-import com.barmina.models.ShoppingCart;
 import com.barmina.models.User;
-import com.barmina.services.ProductService;
 import com.barmina.services.ShoppingCartService;
 
 import javax.servlet.ServletException;
@@ -16,7 +13,6 @@ import java.io.IOException;
 
 @WebServlet("/shoppingCart/remove")
 public class RemoveFromCartServlet extends HttpServlet {
-  private final ProductService productService = new ProductService();
   private final ShoppingCartService cartService = new ShoppingCartService();
 
   @Override
@@ -24,10 +20,7 @@ public class RemoveFromCartServlet extends HttpServlet {
       throws ServletException, IOException {
     HttpSession session = request.getSession();
     User user = (User) session.getAttribute("user");
-    ShoppingCart cart = cartService.getCartById(user.getId());
-    Long productId = Long.valueOf(request.getParameter("productId"));
-    Product product = productService.getById(productId);
-    cartService.delete(cart, product);
+    cartService.delete(user.getId(), Long.valueOf(request.getParameter("productId")));
     response.sendRedirect(request.getContextPath() + "/shoppingCart");
   }
 }

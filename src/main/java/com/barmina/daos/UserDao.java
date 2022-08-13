@@ -4,16 +4,15 @@ import com.barmina.models.Role;
 import com.barmina.models.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserDao {
 
   void insertUser(User user) throws DaoException;
 
-  boolean selectByEmail(User user) throws DaoException;
+  Optional<User> getByEmail(String email) throws DaoException;
 
   boolean checkPassword(User user) throws DaoException;
-
-  User getUser(User user);
 
   void delete(Long userId) throws DaoException;
 

@@ -6,15 +6,12 @@ import java.util.List;
 public class ShoppingCart {
 
   private Long cartId;
-  private List<Item> products;
+  private List<Item> items;
 
   public ShoppingCart() {
-    products = new ArrayList<>();
+    items = new ArrayList<>();
   }
 
-  public List<Item> getProducts() {
-    return products;
-  }
 
   public Long getCartId() {
     return cartId;
@@ -24,12 +21,16 @@ public class ShoppingCart {
     this.cartId = cartId;
   }
 
-  public void setProducts(List<Item> products) {
-    this.products = products;
+  public List<Item> getItems() {
+    return items;
+  }
+
+  public void setItems(List<Item> items) {
+    this.items = items;
   }
 
   @Override
   public String toString() {
-    return "ShoppingCart{" + products;
+    return "ShoppingCart{" + items;
   }
 }

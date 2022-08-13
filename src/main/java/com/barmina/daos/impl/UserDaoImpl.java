@@ -11,25 +11,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class UserDaoImpl implements UserDao {
   private static final String INSERT_SQL =
-      "INSERT INTO users (email,password,user_role,salt) VALUES (?,?,?,?);";
-  private static final String SELECT_WHERE_EMAIL_SQL = "SELECT * FROM users WHERE email = ?;";
+      "INSERT INTO users (email,password,role,salt) VALUES (?,?,?,?);";
+  private static final String SELECT_BY_EMAIL_SQL = "SELECT * FROM users WHERE email = ?;";
 
-  private static final String SELECT_WHERE_PASSWORD_SQL =
-      "SELECT * FROM users WHERE email = ? and password = ?;";
+  private static final String SELECT_BY_PASSWORD_SQL =
+      "SELECT * FROM users WHERE id = ? AND password = ?;";
 
-  private static final String SELECT_USER_SQL =
-      "SELECT user_id,user_role,salt FROM users where email = ?;";
-
-  private static final String DELETE_SQL = "DELETE FROM users WHERE user_id = ?;";
+  private static final String DELETE_SQL = "DELETE FROM users WHERE id = ?;";
 
   private static final String SELECT_SQL = "SELECT * FROM users;";
+  private static final String UPDATE_SQL = "UPDATE users SET role = ? WHERE id = ?";
 
   @Override
   public void insertUser(User user) throws DaoException {
-    try (PreparedStatement statement = createStatement(INSERT_SQL)) {
+    try (Connection connection = DataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(INSERT_SQL)) {
       statement.setString(1, user.getEmail());
       statement.setString(2, user.getPassword());
       statement.setString(3, String.valueOf(user.getRole()));
@@ -41,24 +41,31 @@ public class UserDaoImpl implements UserDao {
   }
 
   @Override
-  public boolean selectByEmail(User user) throws DaoException {
-    try (PreparedStatement statement = createStatement(SELECT_WHERE_EMAIL_SQL)) {
-      statement.setString(1, user.getEmail());
+  public Optional<User> getByEmail(String email) throws DaoException {
+    User user = null;
+    try (Connection connection = DataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(SELECT_BY_EMAIL_SQL)) {
+      statement.setString(1, email);
       try (ResultSet resultSet = statement.executeQuery()) {
-        if (!resultSet.next()) {
-          return false;
+        while (resultSet.next()) {
+          user = new User();
+          user.setId(resultSet.getLong(1));
+          user.setEmail(email);
+          user.setRole(Role.valueOf(resultSet.getString(4)));
+          user.setSalt(resultSet.getBytes(5));
         }
       }
     } catch (SQLException ex) {
       throw new DaoException("Cannot find user with this email", ex);
     }
-    return true;
+    return Optional.ofNullable(user);
   }
 
   @Override
   public boolean checkPassword(User user) throws DaoException {
-    try (PreparedStatement statement = createStatement(SELECT_WHERE_PASSWORD_SQL)) {
-      statement.setString(1, user.getEmail());
+    try (Connection connection = DataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(SELECT_BY_PASSWORD_SQL)) {
+      statement.setLong(1, user.getId());
       statement.setString(2, user.getPassword());
       try (ResultSet resultSet = statement.executeQuery()) {
         if (!resultSet.next()) {
@@ -72,25 +79,9 @@ public class UserDaoImpl implements UserDao {
   }
 
   @Override
-  public User getUser(User user) throws DaoException {
-    try (PreparedStatement statement = createStatement(SELECT_USER_SQL)) {
-      statement.setString(1, user.getEmail());
-      try (ResultSet resultSet = statement.executeQuery()) {
-        while (resultSet.next()) {
-          user.setId(resultSet.getLong(1));
-          user.setRole(Role.valueOf(resultSet.getString(2)));
-          user.setSalt(resultSet.getBytes(3));
-        }
-      }
-    } catch (SQLException ex) {
-      throw new DaoException("Cannot get user", ex);
-    }
-    return user;
-  }
-
-  @Override
   public void delete(Long userId) throws DaoException {
-    try (PreparedStatement statement = createStatement(DELETE_SQL)) {
+    try (Connection connection = DataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(DELETE_SQL)) {
       statement.setLong(1, userId);
       statement.execute();
     } catch (SQLException ex) {
@@ -101,7 +92,8 @@ public class UserDaoImpl implements UserDao {
   @Override
   public List<User> getAll() throws DaoException {
     List<User> allUsers = new ArrayList<>();
-    try (PreparedStatement statement = createStatement(SELECT_SQL);
+    try (Connection connection = DataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(SELECT_SQL);
         ResultSet resultSet = statement.executeQuery()) {
       while (resultSet.next()) {
         User user = new User();
@@ -119,8 +111,8 @@ public class UserDaoImpl implements UserDao {
 
   @Override
   public void updateRole(Long userId, Role role) throws DaoException {
-    try (PreparedStatement statement =
-        createStatement("UPDATE users SET user_role = ? WHERE user_id = ?")) {
+    try (Connection connection = DataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(UPDATE_SQL)) {
       statement.setLong(2, userId);
       statement.setString(1, String.valueOf(role));
       statement.execute();
@@ -129,8 +121,4 @@ public class UserDaoImpl implements UserDao {
     }
   }
 
-  private PreparedStatement createStatement(String SQL) throws SQLException {
-    Connection connection = DataSource.getConnection();
-    return connection.prepareStatement(SQL);
-  }
 }

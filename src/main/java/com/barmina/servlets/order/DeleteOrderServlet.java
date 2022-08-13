@@ -16,8 +16,7 @@ public class DeleteOrderServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    Long orderId = Long.valueOf(request.getParameter("orderId"));
-    orderService.delete(orderId);
+    orderService.delete(Long.valueOf(request.getParameter("orderId")));
     response.sendRedirect(request.getContextPath() + "/listOfOrders");
   }
 }
